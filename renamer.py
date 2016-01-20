@@ -5,7 +5,7 @@ import os
 import re
 from Tkinter import *
 import time
-import sys
+#import sys
 
 
 class App:
