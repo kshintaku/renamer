@@ -10,20 +10,19 @@ import tkFileDialog
 class App:
     def __init__(self, master):
         frame = Frame(master)
-        frame.pack()
+        frame.pack(side=LEFT)
+        self.tex = Text(master)
+        self.tex.pack(side=RIGHT)
 
         self.dirname="blank"
 
         self.button = Button(frame, text="Browse", command=lambda: self.askdirectory())
         self.button.pack(side=TOP)
-        # self.button = Button(frame, text="Folder", command=lambda: self.directory())
-        # self.button.pack(side=LEFT)
         self.button = Button(frame, text="Run", fg="black", command=lambda: self.renamer(self.dirname))
-        self.button.pack(side=BOTTOM)
+        self.button.pack(side=LEFT)
 
     def askdirectory(self):
         self.dirname = tkFileDialog.askdirectory()
-
 
     def directory(self):
         print self.dirname
@@ -32,7 +31,8 @@ class App:
         os.chdir(target)
 
         for filename in os.listdir('.'):
-            print filename
+            self.tex.insert(END, filename)
+            self.tex.see(END)
             filepair = filename.split(".")
             if filepair[-1] in ["avi", "mkv", "mpeg", "mov", "mp4", "mpg", "wmv", "rmvb", "ogg", "ogm", "rm", "vob",
                                 "amv",
@@ -42,18 +42,19 @@ class App:
                     stringfile = "_".join(filepair)
                 else:
                     stringfile = filepair[0]
-                # print stringfile
                 fixedstring = self.stringfixer(stringfile)
                 completestring = fixedstring + "." + extname
-                print completestring
-                # time.sleep(3)
+                # print completestring
+                self.tex.insert(END, " : " + completestring + "\n")
+                self.tex.see(END)
                 if filename != completestring:
                     records = open('records.txt', 'a')
                     records.write(filename + ' : ' + completestring + '\n')
                     records.close()
                 os.rename(filename, completestring)
             else:
-                print "not the file you want"
+                # print "not the file you want"
+                self.tex.insert(END, " : not the file you want\n")
 
     def stringfixer(self, string):
         m = re.sub(r'\[([^]]+)\]', "", string)
