@@ -2,10 +2,9 @@
 # That failed miserable in C++
 # To batch rename our files based on set parameters
 import os
-import re
 from Tkinter import *
-import time
-#import sys
+import tkFileDialog
+
 
 
 class App:
@@ -13,10 +12,21 @@ class App:
         frame = Frame(master)
         frame.pack()
 
-        folder_name = "Q:\R&D - Engineering Information\Engineers\AEM Electronics\KShintaku\Scripting"
+        self.dirname="blank"
 
-        self.button = Button(frame, text="Run", fg="black", command=lambda: self.renamer(folder_name))
-        self.button.pack(side=LEFT)
+        self.button = Button(frame, text="Browse", command=lambda: self.askdirectory())
+        self.button.pack(side=TOP)
+        # self.button = Button(frame, text="Folder", command=lambda: self.directory())
+        # self.button.pack(side=LEFT)
+        self.button = Button(frame, text="Run", fg="black", command=lambda: self.renamer(self.dirname))
+        self.button.pack(side=BOTTOM)
+
+    def askdirectory(self):
+        self.dirname = tkFileDialog.askdirectory()
+
+
+    def directory(self):
+        print self.dirname
 
     def renamer(self, target):
         os.chdir(target)
